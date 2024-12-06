@@ -1,5 +1,8 @@
 package org.net_balancer;
 
+import java.net.DatagramSocket;
+import java.net.SocketException;
+
 public class DAS {
     public static void main(String[] args) {
         if (args.length != 2) {
@@ -11,9 +14,19 @@ public class DAS {
         try {
             port = Integer.parseInt(args[0]);
             number = Integer.parseInt(args[1]);
+
+            try (DatagramSocket socket = new DatagramSocket(port)) {
+                System.out.println("Entering Master mode...");
+                Master master = new Master(socket, number, port);
+                master.run();
+            } catch (SocketException e) {
+                
+            }
         } catch (NumberFormatException e) {
             System.err.println("Invalid port or number format");
             System.exit(1);
         }
+
+
     }
 }
