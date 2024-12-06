@@ -20,13 +20,13 @@ public class DAS {
                 Master master = new Master(socket, number, port);
                 master.run();
             } catch (SocketException e) {
-                
+                System.out.println("Entering Slave mode...");
+                Slave slave = new Slave(port, number);
+                slave.run();
             }
         } catch (NumberFormatException e) {
             System.err.println("Invalid port or number format");
             System.exit(1);
         }
-
-
     }
 }
