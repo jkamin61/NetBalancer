@@ -36,6 +36,9 @@ public class Master {
                 } else if (receivedNumber == -1) {
                     broadcastExit();
                     break;
+                } else {
+                    System.out.println("Received: " + receivedNumber);
+                    receivedNumbers.add(receivedNumber);
                 }
             }
         } catch (Exception e) {
