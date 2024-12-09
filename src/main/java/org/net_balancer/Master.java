@@ -9,11 +9,11 @@ import java.util.List;
 
 public class Master {
     private final DatagramSocket socket;
-    private final int initialNumber;
+    private final double initialNumber;
     private final int port;
-    private final List<Integer> receivedNumbers;
+    private final List<Double> receivedNumbers;
 
-    public Master(DatagramSocket socket, int initialNumber, int port) {
+    public Master(DatagramSocket socket, double initialNumber, int port) {
         this.socket = socket;
         this.initialNumber = initialNumber;
         this.port = port;
@@ -29,7 +29,7 @@ public class Master {
                 socket.receive(packet);
 
                 String message = new String(packet.getData(), 0, packet.getLength());
-                int receivedNumber = Integer.parseInt(message);
+                double receivedNumber = Double.parseDouble(message);
 
                 if (receivedNumber == 0) {
                     broadcastAverage();
@@ -37,7 +37,7 @@ public class Master {
                     broadcastExit();
                     break;
                 } else {
-                    System.out.println("Received: " + receivedNumber);
+                    System.out.println("Received: " + receivedNumber + " from Slave");
                     receivedNumbers.add(receivedNumber);
                 }
             }
@@ -49,10 +49,12 @@ public class Master {
     private void broadcastAverage() throws IOException {
         double average = receivedNumbers.stream()
                 .filter(num -> num != 0 && num != -1)
-                .mapToInt(Integer::intValue)
+                .mapToDouble(Double::doubleValue)
                 .average()
                 .orElse(0.0);
         System.out.println("Average: " + average);
+        String message = String.valueOf(average);
+        broadcastMessage("Average: "+message);
     }
 
     private void broadcastExit() throws IOException {
