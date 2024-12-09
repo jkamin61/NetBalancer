@@ -6,15 +6,15 @@ import java.net.InetAddress;
 
 public class Slave {
     private final int masterPort;
-    private final double number;
+    private final int number;
 
-    public Slave(int masterPort, double number) {
+    public Slave(int masterPort, int number) {
         this.masterPort = masterPort;
         this.number = number;
     }
+
     public void run() {
         try (DatagramSocket socket = new DatagramSocket()) {
-
             InetAddress localHost = InetAddress.getByName("localhost");
             String message = String.valueOf(number);
 
