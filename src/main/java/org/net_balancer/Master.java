@@ -39,6 +39,7 @@ public class Master {
                 } else {
                     System.out.println("Received: " + receivedNumber);
                     receivedNumbers.add(receivedNumber);
+                    System.out.println(receivedNumbers);
                 }
             }
         } catch (Exception e) {
@@ -53,6 +54,8 @@ public class Master {
                 .average()
                 .orElse(0.0);
         System.out.println("Average: " + average);
+        String message = String.valueOf((int) average);
+        broadcastMessage(message);
     }
 
     private void broadcastExit() throws IOException {
@@ -63,7 +66,8 @@ public class Master {
     private void broadcastMessage(String message) throws IOException {
         InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255");
         byte[] data = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(data, data.length, broadcastAddress, port);
+        int targetPort = 60000;
+        DatagramPacket packet = new DatagramPacket(data, data.length, broadcastAddress, targetPort);
         socket.send(packet);
     }
 }
