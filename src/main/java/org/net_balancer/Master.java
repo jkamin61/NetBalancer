@@ -48,11 +48,15 @@ public class Master {
     }
 
     private void broadcastAverage() throws IOException {
-        double average = receivedNumbers.stream()
-                .filter(num -> num != 0 && num != -1)
-                .mapToInt(Integer::intValue)
-                .average()
-                .orElse(0.0);
+        double sum = 0;
+        int count = 0;
+        for (int num : receivedNumbers) {
+            if (num != 0 && num != -1) {
+                sum += num;
+                count++;
+            }
+        }
+        double average = (count > 0) ? (sum / count) : 0.0;
         System.out.println("Average: " + average);
         String message = String.valueOf((int) average);
         broadcastMessage(message);
